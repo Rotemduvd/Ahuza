@@ -77,9 +77,9 @@ const Home = () => {
     };
 
     return (
-        <div style={{ textAlign: "center", padding: "20px" }}>
+        <div style={{textAlign: "center", padding: "20px"}}>
             <h1>ברוך הבא לאחוזה</h1>
-            <div style={{ marginBottom: "10px", width: "70%", margin: "0 auto" }}>
+            <div style={{marginBottom: "10px", width: "70%", margin: "0 auto"}}>
                 <input
                     type="text"
                     value={query}
@@ -92,6 +92,7 @@ const Home = () => {
                     }}
                 />
             </div>
+            <br/>
             <button
                 onClick={handleUseLocation}
                 style={{
@@ -105,7 +106,7 @@ const Home = () => {
             >
                 Use My Current Location
             </button>
-            <br />
+            <br/>
             <button
                 onClick={handleSearch}
                 style={{
@@ -118,7 +119,7 @@ const Home = () => {
             >
                 Search
             </button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{color: "red"}}>{error}</p>}
             {resolvedAddress && (
                 <p>
                     <strong>Resolved Address:</strong> {resolvedAddress.fullAddress}

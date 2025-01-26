@@ -1,63 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { load } from "cheerio";
 import { getDistance } from "geolib";
-
-// Hebrew parking spot data
-const parkingSpots = [
-    {
-        name: "חניון גולדה",
-        address: "ברקוביץ 7, תל-אביב יפו, ישראל",
-        lat: 32.0777617,
-        lon: 34.7857548
-    },
-    {
-        name: "חניון חברה חדשה",
-        address: "חברה חדשה 9, תל-אביב יפו, ישראל",
-        lat: 32.084745,
-        lon: 34.790218
-    },
-    {
-        name: "חניון מונטיפיורי",
-        address: "מונטיפיורי 5, תל-אביב יפו, ישראל",
-        lat: 32.0628,
-        lon: 34.7725
-    },
-    {
-        name: "חניון מפעל הפיס",
-        address: "ליאונרדו דה וינצ'י 5, תל-אביב יפו, ישראל",
-        lat: 32.0741,
-        lon: 34.7822
-    },
-    {
-        name: "חניון ספיר",
-        address: "אליהו ספיר, תל-אביב יפו, ישראל",
-        lat: 32.0853,
-        lon: 34.7818
-    },
-    {
-        name: "חניון קצה השדרה",
-        address: "שדרות רוטשילד 1, תל-אביב יפו, ישראל",
-        lat: 32.0643,
-        lon: 34.7705
-    },
-    {
-        name: "חניון תל-נורדאו",
-        address: "פרישמן 28, תל-אביב יפו, ישראל",
-        lat: 32.0805,
-        lon: 34.7735
-    }
-];
+import parkingSpots from "../data/parkingSpots"; // Use the imported parkingSpots
 
 const Parking = () => {
     const location = useLocation();
     const { lat: userLat, lon: userLon } = location.state || {};
 
-    // If user location is missing, show an error
+    const [availability, setAvailability] = useState({});
+
+    // Fetch parking availability
+    const fetchAvailability = async (spot) => {
+        try {
+            // Use the proxy server
+            const proxyUrl = `http://localhost:4000/proxy?url=${encodeURIComponent(spot.url)}`;
+            const { data } = await axios.get(proxyUrl);
+
+            // Parse the fetched HTML
+            const $ = load(data);
+            const isAvailable = $("img[src='/pics/ParkingIcons/panui.png']").length > 0;
+            return isAvailable ? "פנוי" : "תפוס";
+        } catch (error) {
+            console.error(`Error fetching availability for ${spot.name}:`, error);
+            return "שגיאה";
+        }
+    };
+
+    useEffect(() => {
+        const fetchAllAvailabilities = async () => {
+            const availabilityPromises = parkingSpots.map(async (spot) => {
+                const status = await fetchAvailability(spot);
+                return { [spot.name]: status };
+            });
+
+            const results = await Promise.all(availabilityPromises);
+            setAvailability(results.reduce((acc, curr) => ({ ...acc, ...curr }), {}));
+        };
+
+        fetchAllAvailabilities();
+    }, []);
+
     if (!userLat || !userLon) {
         return <p>לא ניתן לאחזר את המיקום שלך. אנא נסה שוב.</p>;
     }
 
-    // Calculate distances and sort parking spots
     const sortedParkingSpots = parkingSpots
         .map((spot) => ({
             ...spot,
@@ -66,7 +54,7 @@ const Parking = () => {
                 { latitude: spot.lat, longitude: spot.lon }
             )
         }))
-        .sort((a, b) => a.distance - b.distance); // Sort by distance (ascending)
+        .sort((a, b) => a.distance - b.distance);
 
     return (
         <div style={{ padding: "20px" }}>
@@ -88,6 +76,7 @@ const Parking = () => {
                             ? `${(spot.distance / 1000).toFixed(1)} קילומטרים`
                             : `${spot.distance} מטרים`}
                         </p>
+                        <p>סטטוס: {availability[spot.name] || "טוען..."}</p>
                     </div>
                 ))}
             </div>
