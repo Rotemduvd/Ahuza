@@ -58,7 +58,7 @@ const Parking = () => {
 
     return (
         <div style={{ padding: "20px" }}>
-            <h2>חניונים קרובים</h2>
+            <h2>חניונים קרובים לכתובתך:</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "20px" }}>
                 {sortedParkingSpots.map((spot) => (
                     <div

@@ -3,41 +3,47 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const [query, setQuery] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
     const [resolvedAddress, setResolvedAddress] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleSearch = async () => {
-        if (query.trim() === "") {
-            setError("Please enter a location.");
+    const handleQueryChange = async (e) => {
+        const input = e.target.value;
+        setQuery(input);
+
+        if (input.trim() === "") {
+            setSuggestions([]);
             return;
         }
 
         try {
             const response = await fetch(
                 `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-                    query
-                )}&format=json&addressdetails=1&limit=1`
+                    input
+                )}&format=json&addressdetails=1&limit=5`
             );
             const data = await response.json();
 
             if (data && data.length > 0) {
-                const location = data[0];
-                const fullAddress = location.display_name;
-                const lat = location.lat;
-                const lon = location.lon;
-
-                setResolvedAddress({ fullAddress, lat, lon });
-                setError(null);
-
-                navigate("/parking", { state: { address: fullAddress, lat, lon } });
+                setSuggestions(data);
             } else {
-                setError("Location not found. Please try again.");
+                setSuggestions([]);
             }
         } catch (err) {
-            setError("An error occurred while validating the location.");
-            console.error(err);
+            console.error("Error fetching suggestions:", err);
         }
+    };
+
+    const handleSuggestionClick = (suggestion) => {
+        const { display_name, lat, lon } = suggestion;
+        setQuery(display_name);
+        setResolvedAddress({ fullAddress: display_name, lat, lon });
+        setSuggestions([]);
+        setError(null);
+
+        // Navigate to the parking page
+        navigate("/parking", { state: { address: display_name, lat, lon } });
     };
 
     const handleUseLocation = () => {
@@ -55,8 +61,8 @@ const Home = () => {
                             setQuery(data.display_name);
                             setResolvedAddress({
                                 fullAddress: data.display_name,
-                                lat: data.lat,
-                                lon: data.lon,
+                                lat: latitude,
+                                lon: longitude,
                             });
                             setError(null);
                         } else {
@@ -77,13 +83,13 @@ const Home = () => {
     };
 
     return (
-        <div style={{textAlign: "center", padding: "20px"}}>
+        <div style={{ textAlign: "center", padding: "20px" }}>
             <h1>ברוך הבא לאחוזה</h1>
-            <div style={{marginBottom: "10px", width: "70%", margin: "0 auto"}}>
+            <div style={{ marginBottom: "10px", width: "70%", margin: "0 auto" }}>
                 <input
                     type="text"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={handleQueryChange}
                     placeholder="Enter a location"
                     style={{
                         padding: "10px",
@@ -91,8 +97,38 @@ const Home = () => {
                         boxSizing: "border-box",
                     }}
                 />
+                {/* Suggestions Dropdown */}
+                {suggestions.length > 0 && (
+                    <ul
+                        style={{
+                            listStyle: "none",
+                            padding: "10px",
+                            margin: "0",
+                            backgroundColor: "white",
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                            maxHeight: "150px",
+                            overflowY: "auto",
+                            textAlign: "left",
+                        }}
+                    >
+                        {suggestions.map((suggestion, index) => (
+                            <li
+                                key={index}
+                                onClick={() => handleSuggestionClick(suggestion)}
+                                style={{
+                                    padding: "8px",
+                                    cursor: "pointer",
+                                    borderBottom: "1px solid #f0f0f0",
+                                }}
+                            >
+                                {suggestion.display_name}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
-            <br/>
+            <br />
             <button
                 onClick={handleUseLocation}
                 style={{
@@ -106,20 +142,7 @@ const Home = () => {
             >
                 Use My Current Location
             </button>
-            <br/>
-            <button
-                onClick={handleSearch}
-                style={{
-                    padding: "10px",
-                    backgroundColor: "blue",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                }}
-            >
-                Search
-            </button>
-            {error && <p style={{color: "red"}}>{error}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
             {resolvedAddress && (
                 <p>
                     <strong>Resolved Address:</strong> {resolvedAddress.fullAddress}
