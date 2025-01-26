@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { load } from "cheerio";
 import { getDistance } from "geolib";
-import parkingSpots from "../data/parkingSpots"; // Use the imported parkingSpots
+import parkingSpots from "../data/parkingSpots";
 
 const Parking = () => {
     const location = useLocation();
@@ -72,11 +72,25 @@ const Parking = () => {
                     >
                         <h3>{spot.name}</h3>
                         <p>{spot.address}</p>
-                        <p>מרחק: {spot.distance > 1000
-                            ? `${(spot.distance / 1000).toFixed(1)} קילומטרים`
-                            : `${spot.distance} מטרים`}
+                        <p>
+                            מרחק:{" "}
+                            {spot.distance > 1000
+                                ? `${(spot.distance / 1000).toFixed(1)} קילומטרים`
+                                : `${spot.distance} מטרים`}
                         </p>
-                        <p>סטטוס: {availability[spot.name] || "טוען..."}</p>
+                        <p
+                            style={{
+                                color:
+                                    availability[spot.name] === "פנוי"
+                                        ? "green"
+                                        : availability[spot.name] === "תפוס"
+                                            ? "red"
+                                            : "gray",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            סטטוס: {availability[spot.name] || "טוען..."}
+                        </p>
                     </div>
                 ))}
             </div>
