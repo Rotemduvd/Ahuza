@@ -11,14 +11,10 @@ const Parking = () => {
 
     const [availability, setAvailability] = useState({});
 
-    // Fetch parking availability
     const fetchAvailability = async (spot) => {
         try {
-            // Use the proxy server
             const proxyUrl = `http://localhost:4000/proxy?url=${encodeURIComponent(spot.url)}`;
             const { data } = await axios.get(proxyUrl);
-
-            // Parse the fetched HTML
             const $ = load(data);
             const isAvailable = $("img[src='/pics/ParkingIcons/panui.png']").length > 0;
             return isAvailable ? "פנוי" : "תפוס";
@@ -52,27 +48,53 @@ const Parking = () => {
             distance: getDistance(
                 { latitude: userLat, longitude: userLon },
                 { latitude: spot.lat, longitude: spot.lon }
-            )
+            ),
         }))
         .sort((a, b) => a.distance - b.distance);
 
     return (
-        <div style={{ padding: "20px" }}>
-            <h2>חניונים קרובים לכתובתך:</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "20px" }}>
+        <div style={{ padding: "40px", background: "#f5f5f5", minHeight: "100vh" }}>
+            <h2 style={{ textAlign: "center", marginBottom: "30px", color: "#333" }}>
+                חניונים קרובים לכתובתך
+            </h2>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                    gap: "20px",
+                    maxWidth: "1200px",
+                    margin: "0 auto",
+                }}
+            >
                 {sortedParkingSpots.map((spot) => (
                     <div
                         key={spot.name}
                         style={{
-                            border: "1px solid gray",
-                            borderRadius: "8px",
-                            padding: "10px",
+                            border: "1px solid #ddd",
+                            borderRadius: "12px",
+                            padding: "20px",
                             textAlign: "center",
+                            backgroundColor:
+                                availability[spot.name] === "פנוי"
+                                    ? "rgba(76, 175, 80, 0.2)" // Light green pastel
+                                    : availability[spot.name] === "תפוס"
+                                        ? "rgba(255, 82, 82, 0.2)" // Light red pastel
+                                        : "white", // Default white
+                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                        }}
+                        onMouseOver={(e) => {
+                            e.currentTarget.style.transform = "translateY(-5px)";
+                            e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.2)";
+                        }}
+                        onMouseOut={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
                         }}
                     >
-                        <h3>{spot.name}</h3>
-                        <p>{spot.address}</p>
-                        <p>
+                        <h3 style={{marginBottom: "10px", color: "#333"}}>{spot.name}</h3>
+                        <p style={{color: "#666", marginBottom: "10px"}}>{spot.address}</p>
+                        <p style={{color: "#666", marginBottom: "10px"}}>
                             מרחק:{" "}
                             {spot.distance > 1000
                                 ? `${(spot.distance / 1000).toFixed(1)} קילומטרים`
@@ -82,11 +104,12 @@ const Parking = () => {
                             style={{
                                 color:
                                     availability[spot.name] === "פנוי"
-                                        ? "green"
+                                        ? "#4CAF50"
                                         : availability[spot.name] === "תפוס"
-                                            ? "red"
-                                            : "gray",
+                                            ? "#FF5252"
+                                            : "#666",
                                 fontWeight: "bold",
+                                fontSize: "1.1rem",
                             }}
                         >
                             סטטוס: {availability[spot.name] || "טוען..."}

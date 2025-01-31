@@ -21,7 +21,7 @@ const Home = () => {
             const response = await fetch(
                 `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
                     input
-                )}&format=json&addressdetails=1&limit=5`
+                )}&format=json&addressdetails=1&limit=5&countrycodes=IL&bounded=1&viewbox=34.267,33.290,35.897,29.493`
             );
             const data = await response.json();
 
@@ -41,9 +41,6 @@ const Home = () => {
         setResolvedAddress({ fullAddress: display_name, lat, lon });
         setSuggestions([]);
         setError(null);
-
-        // Navigate to the parking page
-        navigate("/parking", { state: { address: display_name, lat, lon } });
     };
 
     const handleUseLocation = () => {
@@ -82,19 +79,45 @@ const Home = () => {
         }
     };
 
+    const handleSearch = () => {
+        if (resolvedAddress) {
+            navigate("/parking", {
+                state: {
+                    address: resolvedAddress.fullAddress,
+                    lat: resolvedAddress.lat,
+                    lon: resolvedAddress.lon
+                },
+            });
+        } else {
+            setError("Please select a location first.");
+        }
+    };
+
     return (
-        <div style={{ textAlign: "center", padding: "20px" }}>
-            <h1>ברוך הבא לאחוזה</h1>
-            <div style={{ marginBottom: "10px", width: "70%", margin: "0 auto" }}>
+        <div
+            style={{
+                textAlign: "center",
+                padding: "40px",
+                background: "linear-gradient(135deg, #7284ed, #2575fc)",
+                minHeight: "100vh",
+                color: "white",
+            }}
+        >
+            <h1 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>ברוך הבא לאחוזה</h1>
+            <div style={{ marginBottom: "20px", width: "70%", margin: "0 auto" }}>
                 <input
                     type="text"
                     value={query}
                     onChange={handleQueryChange}
                     placeholder="Enter a location"
                     style={{
-                        padding: "10px",
+                        padding: "12px",
                         width: "100%",
                         boxSizing: "border-box",
+                        borderRadius: "15px",
+                        border: "none",
+                        fontSize: "1rem",
+                        outline: "none",
                     }}
                 />
                 {/* Suggestions Dropdown */}
@@ -102,11 +125,11 @@ const Home = () => {
                     <ul
                         style={{
                             listStyle: "none",
-                            padding: "10px",
-                            margin: "0",
+                            padding: "0",
+                            margin: "10px 0 0",
                             backgroundColor: "white",
                             border: "1px solid #ccc",
-                            borderRadius: "4px",
+                            borderRadius: "8px",
                             maxHeight: "150px",
                             overflowY: "auto",
                             textAlign: "left",
@@ -117,9 +140,10 @@ const Home = () => {
                                 key={index}
                                 onClick={() => handleSuggestionClick(suggestion)}
                                 style={{
-                                    padding: "8px",
+                                    padding: "10px",
                                     cursor: "pointer",
                                     borderBottom: "1px solid #f0f0f0",
+                                    color: "#333",
                                 }}
                             >
                                 {suggestion.display_name}
@@ -132,19 +156,43 @@ const Home = () => {
             <button
                 onClick={handleUseLocation}
                 style={{
-                    marginBottom: "20px",
-                    padding: "10px",
-                    backgroundColor: "green",
+                    marginBottom: "10px",
+                    padding: "12px 24px",
+                    backgroundColor: "#4CAF50",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "15px",
+                    fontSize: "1rem",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s ease",
                 }}
+                onMouseOver={(e) => (e.target.style.backgroundColor = "#45a049")}
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#4CAF50")}
             >
                 Use My Current Location
             </button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <br />
+            <button
+                onClick={handleSearch}
+                style={{
+                    marginTop: "10px",
+                    padding: "12px 24px",
+                    backgroundColor: "#007bff",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "15px",
+                    fontSize: "1rem",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s ease",
+                }}
+                onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+            >
+                Search
+            </button>
+            {error && <p style={{ color: "#ff6b6b" }}>{error}</p>}
             {resolvedAddress && (
-                <p>
+                <p style={{ color: "#fff", fontSize: "1.2rem" }}>
                     <strong>Resolved Address:</strong> {resolvedAddress.fullAddress}
                 </p>
             )}
