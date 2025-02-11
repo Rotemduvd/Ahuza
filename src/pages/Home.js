@@ -1,95 +1,83 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Home = () => {
     const [query, setQuery] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
     const [resolvedAddress, setResolvedAddress] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false); // New state for loading indicator
+    const [searchCompleted, setSearchCompleted] = useState(false); // To track if the first search is done
     const navigate = useNavigate();
 
-    const handleQueryChange = async (e) => {
-        const input = e.target.value;
-        setQuery(input);
+    const API_KEY = "pk.2724ce5ac8a6f4e741507498cbcb687e"; // Replace with your LocationIQ API key
 
-        if (input.trim() === "") {
-            setSuggestions([]);
-            return;
-        }
+// Handle query change
+    const handleQueryChange = (e) => {
+        setQuery(e.target.value);
+        setSearchCompleted(false); // Reset searchCompleted if query is changed
+    };
 
-        try {
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-                    input
-                )}&format=json&addressdetails=1&limit=5&countrycodes=IL&bounded=1&viewbox=34.267,33.290,35.897,29.493`
-            );
-            const data = await response.json();
+    // Trigger search after pressing Enter or clicking Search
+    const handleSearchTrigger = async (e) => {
+        if (e.key === "Enter" || e.type === "click") {
+            if (!searchCompleted) {
+                // First press: fetch suggestion and fill in the bar
+                if (query.trim() === "") {
+                    setError("Please enter a location.");
+                    return;
+                }
 
-            if (data && data.length > 0) {
-                setSuggestions(data);
+                setLoading(true); // Show loading indicator
+                await fetchSuggestion(query); // Fetch the suggestion
             } else {
-                setSuggestions([]);
+                // Second press: navigate to the next page
+                if (resolvedAddress) {
+                    navigate("/parking", {
+                        state: {
+                            address: resolvedAddress.display_name,
+                            lat: resolvedAddress.lat,
+                            lon: resolvedAddress.lon,
+                        },
+                    });
+                } else {
+                    setError("Please select a location first.");
+                }
             }
-        } catch (err) {
-            console.error("Error fetching suggestions:", err);
         }
     };
 
-    const handleSuggestionClick = (suggestion) => {
-        const { display_name, lat, lon } = suggestion;
-        setQuery(display_name);
-        setResolvedAddress({ fullAddress: display_name, lat, lon });
-        setSuggestions([]);
-        setError(null);
-    };
-
-    const handleUseLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const { latitude, longitude } = position.coords;
-
-                    try {
-                        const geocodeUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
-                        const response = await fetch(geocodeUrl);
-                        const data = await response.json();
-
-                        if (data && data.display_name) {
-                            setQuery(data.display_name);
-                            setResolvedAddress({
-                                fullAddress: data.display_name,
-                                lat: latitude,
-                                lon: longitude,
-                            });
-                            setError(null);
-                        } else {
-                            setError("Unable to retrieve your current location.");
-                        }
-                    } catch (err) {
-                        setError("An error occurred while fetching your location.");
-                        console.error(err);
-                    }
-                },
-                () => {
-                    setError("Geolocation permission denied.");
+    // Fetch the top suggestion based on the user's query
+    const fetchSuggestion = async (query) => {
+        try {
+            const response = await axios.get(
+                `https://us1.locationiq.com/v1/search.php`,
+                {
+                    params: {
+                        key: API_KEY, // Your API token
+                        q: query,
+                        format: "json",
+                        limit: 1, // Only 1 result
+                        bounded: 1,
+                    },
                 }
             );
-        } else {
-            setError("Geolocation is not supported by your browser.");
-        }
-    };
+            const data = response.data;
 
-    const handleSearch = () => {
-        if (resolvedAddress) {
-            navigate("/parking", {
-                state: {
-                    address: resolvedAddress.fullAddress,
-                    lat: resolvedAddress.lat,
-                    lon: resolvedAddress.lon
-                },
-            });
-        } else {
-            setError("Please select a location first.");
+            if (data && data.length > 0) {
+                setResolvedAddress(data[0]); // Use the first suggestion
+                setQuery(data[0].display_name); // Show the address in the input
+                setError(null);
+                setSearchCompleted(true); // Mark that search is completed
+            } else {
+                setResolvedAddress(null);
+                setError("No location found.");
+            }
+        } catch (err) {
+            console.error("Error fetching suggestion:", err);
+            setError("Error fetching data, please try again.");
+        } finally {
+            setLoading(false); // Hide loading indicator
         }
     };
 
@@ -109,6 +97,7 @@ const Home = () => {
                     type="text"
                     value={query}
                     onChange={handleQueryChange}
+                    onKeyDown={handleSearchTrigger} // Trigger search on Enter key
                     placeholder="Enter a location"
                     style={{
                         padding: "12px",
@@ -120,60 +109,15 @@ const Home = () => {
                         outline: "none",
                     }}
                 />
-                {/* Suggestions Dropdown */}
-                {suggestions.length > 0 && (
-                    <ul
-                        style={{
-                            listStyle: "none",
-                            padding: "0",
-                            margin: "10px 0 0",
-                            backgroundColor: "white",
-                            border: "1px solid #ccc",
-                            borderRadius: "8px",
-                            maxHeight: "150px",
-                            overflowY: "auto",
-                            textAlign: "left",
-                        }}
-                    >
-                        {suggestions.map((suggestion, index) => (
-                            <li
-                                key={index}
-                                onClick={() => handleSuggestionClick(suggestion)}
-                                style={{
-                                    padding: "10px",
-                                    cursor: "pointer",
-                                    borderBottom: "1px solid #f0f0f0",
-                                    color: "#333",
-                                }}
-                            >
-                                {suggestion.display_name}
-                            </li>
-                        ))}
-                    </ul>
+                {loading && (
+                    <p style={{ color: "white" }}>
+                        Searching... <span>🔍</span>
+                    </p>
                 )}
             </div>
             <br />
             <button
-                onClick={handleUseLocation}
-                style={{
-                    marginBottom: "10px",
-                    padding: "12px 24px",
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "15px",
-                    fontSize: "1rem",
-                    cursor: "pointer",
-                    transition: "background-color 0.3s ease",
-                }}
-                onMouseOver={(e) => (e.target.style.backgroundColor = "#45a049")}
-                onMouseOut={(e) => (e.target.style.backgroundColor = "#4CAF50")}
-            >
-                Use My Current Location
-            </button>
-            <br />
-            <button
-                onClick={handleSearch}
+                onClick={handleSearchTrigger} // Trigger search on button click
                 style={{
                     marginTop: "10px",
                     padding: "12px 24px",
@@ -188,14 +132,10 @@ const Home = () => {
                 onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
                 onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
             >
-                Search
+                {searchCompleted ? "Proceed to Parking" : "Search"}
             </button>
+
             {error && <p style={{ color: "#ff6b6b" }}>{error}</p>}
-            {resolvedAddress && (
-                <p style={{ color: "#fff", fontSize: "1.2rem" }}>
-                    <strong>Resolved Address:</strong> {resolvedAddress.fullAddress}
-                </p>
-            )}
         </div>
     );
 };
