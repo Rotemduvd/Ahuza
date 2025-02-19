@@ -86,27 +86,31 @@ const Home = () => {
             style={{
                 textAlign: "center",
                 padding: "40px",
-                background: "linear-gradient(135deg, #7284ed, #2575fc)",
+                background: "linear-gradient(135deg, #0d0d0d, #1a1a1a, #292929)",
                 minHeight: "100vh",
                 color: "white",
+                fontFamily: "'Handjet', sans-serif",
             }}
         >
             <h1 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>ברוך הבא לאחוזה</h1>
-            <div style={{ marginBottom: "20px", width: "70%", margin: "0 auto" }}>
+            <div style={{ marginBottom: "20px", width: "70%", margin: "0 auto", fontFamily: "'Handjet', sans-serif", }}>
                 <input
                     type="text"
                     value={query}
                     onChange={handleQueryChange}
                     onKeyDown={handleSearchTrigger} // Trigger search on Enter key
-                    placeholder="Enter a location"
+                    placeholder="חפש כתובת"
                     style={{
+                        fontFamily: "'Handjet', sans-serif",
                         padding: "12px",
-                        width: "100%",
+                        width: "70%",
                         boxSizing: "border-box",
                         borderRadius: "15px",
                         border: "none",
                         fontSize: "1rem",
                         outline: "none",
+                        direction: "rtl",
+                        textAlign: "right",
                     }}
                 />
                 {loading && (
@@ -119,9 +123,10 @@ const Home = () => {
             <button
                 onClick={handleSearchTrigger} // Trigger search on button click
                 style={{
+                    fontFamily: "'Handjet', sans-serif",
                     marginTop: "10px",
                     padding: "12px 24px",
-                    backgroundColor: "#007bff",
+                    backgroundColor: "#f39c58",
                     color: "white",
                     border: "none",
                     borderRadius: "15px",
@@ -129,8 +134,8 @@ const Home = () => {
                     cursor: "pointer",
                     transition: "background-color 0.3s ease",
                 }}
-                onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-                onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+                onMouseOver={(e) => (e.target.style.backgroundColor = "#dc8125")}
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#f39c58")}
             >
                 {searchCompleted ? "Proceed to Parking" : "Search"}
             </button>

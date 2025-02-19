@@ -70,7 +70,8 @@ const Parking = () => {
                     <div
                         key={spot.name}
                         style={{
-                            border: "1px solid #ddd",
+                            border: "3px solid #ddd",
+                            borderColor: "#dc8125",
                             borderRadius: "12px",
                             padding: "20px",
                             textAlign: "center",
