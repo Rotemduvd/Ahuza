@@ -114,6 +114,7 @@ const Home = () => {
                         textAlign: "right",
                     }}
                 />
+
                 {loading && (
                     <p style={{color: "white"}}>
                         Searching... <span>🔍</span>
@@ -140,7 +141,7 @@ const Home = () => {
             >
                 {searchCompleted ? "Proceed to Parking" : "Search"}
             </button>
-
+            <br/>
             {error && <p style={{color: "#ff6b6b"}}>{error}</p>}
         </div>
     );

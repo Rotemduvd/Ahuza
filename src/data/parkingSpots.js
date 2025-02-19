@@ -111,6 +111,132 @@ const parkingSpots = [
         url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=18",
         lat: 32.061421,
         lon: 34.771312
+    },
+    {
+        name: "חניון המערכה",
+        address: "המערכה 10, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=77",
+        lat: 32.06163610039797,
+        lon: 34.79317691231515
+    },
+    {
+        name: "חניון הצפירה 1",
+        address: "הצפירה 2, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=19",
+        lat: 32.0615,
+        lon: 34.7798
+    },
+    {
+        name: "חניון הצפירה 2",
+        address: "הצפירה 8, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=20",
+        lat: 32.0618,
+        lon: 34.7802
+    },
+    {
+        name: "חניון הרב קוק",
+        address: "הרב קוק פינת הארי, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=57",
+        lat: 32.07089,
+        lon: 34.7682
+    },
+    {
+        name: "חניון התקומה",
+        address: "המרד 36, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=44",
+        lat: 32.0639,
+        lon: 34.7622
+    },
+    {
+        name: "חניון התרבות",
+        address: "הוברמן 1, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=94",
+        lat: 32.0725,
+        lon: 34.7791
+    },
+    {
+        name: "חניון וולפסון",
+        address: "השלום 120, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=78",
+        lat: 32.0701,
+        lon: 34.7923
+    },
+    {
+        name: "חניון וולפסון 2",
+        address: "הטייסים 39, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=89",
+        lat: 32.056,
+        lon: 34.807
+    },
+    {
+        name: "חניון כרמל 1",
+        address: "קלישר פינת הכרמל, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=24",
+        lat: 32.0682,
+        lon: 34.7671
+    },
+    {
+        name: "חניון כרמל 2",
+        address: "סמטת הכרמל 12, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=114",
+        lat: 32.0685,
+        lon: 34.7674
+    },
+    {
+        name: "חניון לולאה",
+        address: "פרשת דרכים 10, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=26",
+        lat: 32.08181,
+        lon: 34.79951
+    },
+    {
+        name: "חניון סינרמה",
+        address: "יצחק שדה 45, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=37",
+        lat: 32.0708,
+        lon: 34.7902
+    },
+    {
+        name: "חניון סעדיה גאון",
+        address: "ציקלג 7, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=38",
+        lat: 32.0712,
+        lon: 34.7915
+    },
+    {
+        name: "חניון פליטי הספר",
+        address: "פליטי הספר פינת דם המכבים, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=75",
+        lat: 32.0715,
+        lon: 34.7928
+    },
+    {
+        name: "חניון פלמ״ח",
+        address: "יגאל אלון 68, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=39",
+        lat: 32.0718,
+        lon: 34.7941
+    },
+    {
+        name: "חניון צמרות",
+        address: "רחוב אלכסנדר בוסקוביץ 1, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=127",
+        lat: 32.0720,
+        lon: 34.7953
+    },
+    {
+        name: "חניון רבניצקי",
+        address: "רבניצקי 6, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=40",
+        lat: 32.0723,
+        lon: 34.7965
+    },
+    {
+        name: "חניון רמז-ארלוזורוב",
+        address: "רמז 1, תל-אביב יפו, ישראל",
+        url: "https://www.ahuzot.co.il/Parking/ParkingDetails/?ID=131",
+        lat: 32.0725,
+        lon: 34.7978
     }
 
     
