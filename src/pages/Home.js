@@ -92,8 +92,8 @@ const Home = () => {
                 fontFamily: "'Handjet', sans-serif",
             }}
         >
-            <h1 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>ברוך הבא לאחוזה</h1>
-            <div style={{ marginBottom: "20px", width: "70%", margin: "0 auto", fontFamily: "'Handjet', sans-serif", }}>
+            <h1 style={{fontSize: "2.5rem", marginBottom: "20px"}}>ברוך הבא לאחוזה</h1>
+            <div style={{marginBottom: "20px", width: "70%", margin: "0 auto", fontFamily: "'Handjet', sans-serif",}}>
                 <input
                     type="text"
                     value={query}
@@ -103,10 +103,11 @@ const Home = () => {
                     style={{
                         fontFamily: "'Handjet', sans-serif",
                         padding: "12px",
-                        width: "70%",
+                        width: "80%",
                         boxSizing: "border-box",
                         borderRadius: "15px",
-                        border: "none",
+                        border: "3px solid #ddd",
+                        borderColor: "#f39c58",
                         fontSize: "1rem",
                         outline: "none",
                         direction: "rtl",
@@ -114,12 +115,12 @@ const Home = () => {
                     }}
                 />
                 {loading && (
-                    <p style={{ color: "white" }}>
+                    <p style={{color: "white"}}>
                         Searching... <span>🔍</span>
                     </p>
                 )}
             </div>
-            <br />
+            <br/>
             <button
                 onClick={handleSearchTrigger} // Trigger search on button click
                 style={{
@@ -140,7 +141,7 @@ const Home = () => {
                 {searchCompleted ? "Proceed to Parking" : "Search"}
             </button>
 
-            {error && <p style={{ color: "#ff6b6b" }}>{error}</p>}
+            {error && <p style={{color: "#ff6b6b"}}>{error}</p>}
         </div>
     );
 };
