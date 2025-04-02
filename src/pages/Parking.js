@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getDistance } from "geolib";
 import parkingSpots from "../data/parkingSpots";
+import ParkingModal from "../components/ParkingModal";
 
 const Parking = () => {
     const location = useLocation();
     const { lat: userLat, lon: userLon } = location.state || {};
+    const [selectedSpot, setSelectedSpot] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     if (!userLat || !userLon) {
         return <p>לא ניתן לאחזר את המיקום שלך. אנא נסה שוב.</p>;
@@ -20,6 +23,11 @@ const Parking = () => {
             ),
         }))
         .sort((a, b) => a.distance - b.distance);
+
+    const handleSpotClick = (spot) => {
+        setSelectedSpot(spot);
+        setIsModalOpen(true);
+    };
 
     return (
         <div style={{ padding: "40px", background: "#f5f5f5", minHeight: "100vh" }}>
@@ -58,7 +66,7 @@ const Parking = () => {
                             e.currentTarget.style.transform = "translateY(0)";
                             e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
                         }}
-                        onClick={() => window.open(spot.url, "_blank")} // Open URL in a new tab
+                        onClick={() => handleSpotClick(spot)}
                     >
                         <h3 style={{ marginBottom: "10px", color: "#333" }}>{spot.name}</h3>
                         <p style={{ color: "#666", marginBottom: "10px" }}>{spot.address}</p>
@@ -71,6 +79,13 @@ const Parking = () => {
                     </div>
                 ))}
             </div>
+            {selectedSpot && (
+                <ParkingModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    spot={selectedSpot}
+                />
+            )}
         </div>
     );
 };
