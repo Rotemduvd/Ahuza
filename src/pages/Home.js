@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import lotusCar from "../assets/lotus-esprit-s1-car--isometry--white-background (2).svg";
 
 const Home = () => {
     const [query, setQuery] = useState("");
@@ -12,7 +13,7 @@ const Home = () => {
 
     const API_KEY = "pk.2724ce5ac8a6f4e741507498cbcb687e"; // Replace with your LocationIQ API key
 
-// Handle query change
+    // Handle query change
     const handleQueryChange = (e) => {
         setQuery(e.target.value);
         setSearchCompleted(false); // Reset searchCompleted if query is changed
@@ -143,6 +144,22 @@ const Home = () => {
             </button>
             <br/>
             {error && <p style={{color: "#ff6b6b"}}>{error}</p>}
+            
+            <div style={{ 
+                marginTop: "40px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+            }}>
+                <img 
+                    src={lotusCar} 
+                    alt="Lotus Car" 
+                    style={{
+                        width: "300px",
+                        height: "auto"
+                    }}
+                />
+            </div>
         </div>
     );
 };
