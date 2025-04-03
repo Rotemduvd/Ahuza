@@ -13,72 +13,52 @@ const ParkingModal = ({ isOpen, onClose, spot }) => {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0)',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 zIndex: 1000,
-                animation: 'fadeIn 0.3s ease forwards',
             }}
             onClick={onClose}
         >
             <div
                 style={{
                     backgroundColor: 'white',
-                    padding: '20px',
+                    padding: '15px',
                     borderRadius: '12px',
-                    width: '90%',
-                    maxWidth: '500px',
+                    width: '85%',
+                    maxWidth: '400px',
                     position: 'relative',
                     direction: 'rtl',
                     border: '3px solid black',
-                    animation: 'modalSlideIn 0.4s ease forwards',
-                    transform: 'scale(0.8)',
                 }}
                 onClick={(e) => e.stopPropagation()}
             >
-                <style>
-                    {`
-                        @keyframes fadeIn {
-                            from {
-                                background-color: rgba(0, 0, 0, 0);
-                            }
-                            to {
-                                background-color: rgba(0, 0, 0, 0.5);
-                            }
-                        }
-                        @keyframes modalSlideIn {
-                            from {
-                                transform: scale(0.8) translateY(-20px);
-                                opacity: 0;
-                            }
-                            to {
-                                transform: scale(1) translateY(0);
-                                opacity: 1;
-                            }
-                        }
-                    `}
-                </style>
                 <button
                     onClick={onClose}
                     style={{
                         position: 'absolute',
-                        top: '10px',
-                        left: '10px',
+                        top: '8px',
+                        left: '8px',
                         background: 'none',
                         border: 'none',
-                        fontSize: '24px',
+                        fontSize: '20px',
                         cursor: 'pointer',
                         color: '#666',
-                        transition: 'color 0.3s ease',
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.color = '#333'}
-                    onMouseOut={(e) => e.currentTarget.style.color = '#666'}
                 >
                     ×
                 </button>
-                <h2 style={{ marginBottom: '20px', color: '#333', textAlign: 'center' }}>{spot.name}</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <h2 style={{ 
+                    marginBottom: '15px', 
+                    color: '#333', 
+                    textAlign: 'center',
+                    fontSize: '1.2rem',
+                    padding: '0 20px'
+                }}>
+                    {spot.name}
+                </h2>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <a
                         href={spot.url}
                         target="_blank"
@@ -86,21 +66,15 @@ const ParkingModal = ({ isOpen, onClose, spot }) => {
                         style={{
                             backgroundColor: '#dc8125',
                             color: 'white',
-                            padding: '12px',
+                            padding: '10px',
                             borderRadius: '8px',
                             textDecoration: 'none',
                             textAlign: 'center',
-                            transition: 'all 0.3s ease',
-                            transform: 'translateY(0)',
+                            transition: 'background-color 0.3s',
+                            fontSize: '0.9rem'
                         }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.backgroundColor = '#c1701f';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.backgroundColor = '#dc8125';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                        }}
+                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#c1701f')}
+                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#dc8125')}
                     >
                         אתר החניון - תפוסה
                     </a>
@@ -111,21 +85,15 @@ const ParkingModal = ({ isOpen, onClose, spot }) => {
                         style={{
                             backgroundColor: '#dc8125',
                             color: 'white',
-                            padding: '12px',
+                            padding: '10px',
                             borderRadius: '8px',
                             textDecoration: 'none',
                             textAlign: 'center',
-                            transition: 'all 0.3s ease',
-                            transform: 'translateY(0)',
+                            transition: 'background-color 0.3s',
+                            fontSize: '0.9rem'
                         }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.backgroundColor = '#c1701f';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.backgroundColor = '#dc8125';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                        }}
+                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#c1701f')}
+                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#dc8125')}
                     >
                         ניווט ב-Waze
                     </a>

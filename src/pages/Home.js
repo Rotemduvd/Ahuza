@@ -94,6 +94,7 @@ const Home = () => {
             }}
         >
             <h1 style={{fontSize: "2.5rem", marginBottom: "20px"}}>ברוך הבא לאחוזה</h1>
+            <h2 style={{fontSize: "1.2rem", marginBottom: "20px"}}>מנוע חיפוש חניוני אחוזת החוף</h2>
             <div style={{marginBottom: "20px", width: "70%", margin: "0 auto", fontFamily: "'Handjet', sans-serif",}}>
                 <input
                     type="text"
@@ -104,7 +105,7 @@ const Home = () => {
                     style={{
                         fontFamily: "'Handjet', sans-serif",
                         padding: "12px",
-                        width: "80%",
+                        width: "85%",
                         boxSizing: "border-box",
                         borderRadius: "15px",
                         border: "3px solid #ddd",
@@ -137,7 +138,7 @@ const Home = () => {
                     cursor: "pointer",
                     transition: "background-color 0.3s ease",
                 }}
-                onMouseOver={(e) => (e.target.style.backgroundColor = "#dc8125")}
+                onMouseOver={(e) => (e.target.style.backgroundColor = "#8DFC42")}
                 onMouseOut={(e) => (e.target.style.backgroundColor = "#f39c58")}
             >
                 {searchCompleted ? "Proceed to Parking" : "Search"}
