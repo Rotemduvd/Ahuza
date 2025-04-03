@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/Ahuza/static/css/main.1eb7d509.css",
-    "main.js": "/Ahuza/static/js/main.cddf792c.js",
+    "main.js": "/Ahuza/static/js/main.69936b90.js",
     "static/js/488.3203b380.chunk.js": "/Ahuza/static/js/488.3203b380.chunk.js",
     "static/media/lotus-esprit-s1-car--isometry--white-background (2).svg": "/Ahuza/static/media/lotus-esprit-s1-car--isometry--white-background (2).359c480427fecb967b00df08eab45911.svg",
     "index.html": "/Ahuza/index.html",
     "main.1eb7d509.css.map": "/Ahuza/static/css/main.1eb7d509.css.map",
-    "main.cddf792c.js.map": "/Ahuza/static/js/main.cddf792c.js.map",
+    "main.69936b90.js.map": "/Ahuza/static/js/main.69936b90.js.map",
     "488.3203b380.chunk.js.map": "/Ahuza/static/js/488.3203b380.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1eb7d509.css",
-    "static/js/main.cddf792c.js"
+    "static/js/main.69936b90.js"
   ]
 }
